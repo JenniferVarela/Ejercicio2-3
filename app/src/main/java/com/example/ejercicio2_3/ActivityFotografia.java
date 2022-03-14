@@ -30,7 +30,7 @@ import java.util.Date;
 
 public class ActivityFotografia extends AppCompatActivity {
 
-    Button btnSave;
+    Button btnSave,btnGalery;
     FloatingActionButton btnFoto;
     ImageView foto;
     EditText txtDescription;
@@ -45,7 +45,8 @@ public class ActivityFotografia extends AppCompatActivity {
         setContentView(R.layout.activity_fotografia);
 
         btnSave = (Button) findViewById(R.id.btnSave);
-        btnFoto = (FloatingActionButton) findViewById(R.id.fbtnfoto);
+        btnGalery = (Button) findViewById(R.id.btnGaleria);
+                btnFoto = (FloatingActionButton) findViewById(R.id.fbtnfoto);
         foto = (ImageView) findViewById(R.id.fotografia);
         txtDescription = (EditText) findViewById(R.id.txtDescription);
 
@@ -58,10 +59,21 @@ public class ActivityFotografia extends AppCompatActivity {
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 guardarDatos();
             }
         });
+
+        btnGalery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),ActivityListar.class);
+                startActivity(intent);
+            }
+        });
+
+
     }
 
     private void guardarDatos() {
@@ -70,6 +82,11 @@ public class ActivityFotografia extends AppCompatActivity {
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
             String imageFileName = "JPEG_" + timeStamp + "_";
             MediaStore.Images.Media.insertImage(getContentResolver(), imagen, imageFileName , "yourDescription");
+
+            Intent intent = new Intent(this, ActivityFotografia.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK |Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
             limpiar();
         }catch (Exception e){
             Toast.makeText(getApplicationContext(), "Debe de tomarse una foto ",Toast.LENGTH_LONG).show();
